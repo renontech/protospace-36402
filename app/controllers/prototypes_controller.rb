@@ -1,6 +1,5 @@
 class PrototypesController < ApplicationController
-  before_action :authenticate_user!, only: [:new, :destroy] 
-  before_action :move_to_index, only: [:new, :edit]
+  before_action :authenticate_user!, only: [:new, :edit, :destroy] 
   before_action :prototype_find, only: [:show, :edit, :update, :destroy]
   before_action :cannot_other_user_proto_edit, only: :edit
 
@@ -45,12 +44,6 @@ class PrototypesController < ApplicationController
   private
   def strong
     params.require(:prototype).permit(:title, :catch_copy, :concept, :image).merge(user_id: current_user.id)
-  end
-
-  def move_to_index
-    unless user_signed_in?
-      redirect_to action: :index
-    end
   end
 
   def prototype_find
